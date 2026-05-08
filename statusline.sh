@@ -35,16 +35,23 @@ if [ -n "$WORKTREE" ]; then
   WT_SEG=$(printf ' \033[32m[%s]\033[0m' "$WORKTREE")
 fi
 
-if [ "$REMAINING" = "0" ]; then
-  if [ -n "$BRANCH" ]; then
-    printf '\033[36m%s\033[0m%s \033[35m%s\033[0m \033[33m...\033[0m' "$DIR" "$WT_SEG" "$BRANCH"
+if [ -n "$WORKTREE" ]; then
+  # Worktree mode: only show worktree name and context
+  if [ "$REMAINING" = "0" ]; then
+    printf '\033[32m[%s]\033[0m \033[33m...\033[0m' "$WORKTREE"
   else
-    printf '\033[36m%s\033[0m%s \033[33m...\033[0m' "$DIR" "$WT_SEG"
+    printf '\033[32m[%s]\033[0m \033[33m%s%% context remaining\033[0m' "$WORKTREE" "$REMAINING"
+  fi
+elif [ "$REMAINING" = "0" ]; then
+  if [ -n "$BRANCH" ]; then
+    printf '\033[36m%s\033[0m \033[35m%s\033[0m \033[33m...\033[0m' "$DIR" "$BRANCH"
+  else
+    printf '\033[36m%s\033[0m \033[33m...\033[0m' "$DIR"
   fi
 else
   if [ -n "$BRANCH" ]; then
-    printf '\033[36m%s\033[0m%s \033[35m%s\033[0m \033[33m%s%% context remaining\033[0m' "$DIR" "$WT_SEG" "$BRANCH" "$REMAINING"
+    printf '\033[36m%s\033[0m \033[35m%s\033[0m \033[33m%s%% context remaining\033[0m' "$DIR" "$BRANCH" "$REMAINING"
   else
-    printf '\033[36m%s\033[0m%s \033[33m%s%% context remaining\033[0m' "$DIR" "$WT_SEG" "$REMAINING"
+    printf '\033[36m%s\033[0m \033[33m%s%% context remaining\033[0m' "$DIR" "$REMAINING"
   fi
 fi
